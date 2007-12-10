@@ -124,6 +124,11 @@ module DVBStreamer # :nodoc:
 		end
 		
 		
+		def lslcn
+			result = command('lslcn')
+			return nil if result.content.empty?
+			return result.content
+		end
 		
 	end
 
