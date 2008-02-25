@@ -2,7 +2,6 @@
 
 require 'dvbstreamer/client'
 require 'base_controller'
-require 'json'
 
 
 module WebDVB

@@ -1,7 +1,10 @@
 #!/usr/bin/ruby
 
+require 'rubygems'
 require 'webrick'
 require 'erb'
+require 'json'
+
 
 class BaseController < WEBrick::HTTPServlet::AbstractServlet
 
