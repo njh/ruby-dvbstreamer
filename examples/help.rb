@@ -7,10 +7,9 @@
 # line even if the gem is not yet installed properly.
 $: << 'lib/' << '../lib/'
 
+require 'dvbstreamer/client'
 
-require 'dvbstreamer'
-
-dvbs = DVBStreamer::Client.new('star.aelius.co.uk')
+dvbs = DVBStreamer::Client.new
 puts dvbs.command('help').content.join("\n")
 dvbs.close
 

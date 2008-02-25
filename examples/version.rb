@@ -10,9 +10,9 @@
 $: << 'lib/' << '../lib/'
 
 
-require 'dvbstreamer'
+require 'dvbstreamer/client'
 
-dvbs = DVBStreamer::Client.new('star.aelius.co.uk')
+dvbs = DVBStreamer::Client.new
 puts "Server Version: "+dvbs.server_version
 dvbs.close
 

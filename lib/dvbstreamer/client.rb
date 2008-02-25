@@ -49,7 +49,7 @@ module DVBStreamer # :nodoc:
 		end
 		
 		def is_success?
-			return response.code == 0x0000
+			return @code == 0x0000
 		end
 		
 	end
@@ -84,6 +84,7 @@ module DVBStreamer # :nodoc:
 			args.unshift(cmd)
 	
 			# Send the command it its arguments to the server
+			$stderr.puts "Sending: "+args.join(' ')
 			@socket.puts(args.join(' '))
 	
 			# FIXME: insert timeout code here
@@ -123,13 +124,59 @@ module DVBStreamer # :nodoc:
 			command('vars')
 		end
 		
-		
-		def lslcn
-			result = command('lslcn')
-			return nil if result.content.empty?
-			return result.content
+		## Return an array of service names
+		def services
+			command('lsservices')
 		end
 		
+		def channels
+			result = command('lslcn')
+			channels = Hash.new
+			for channel in result.content
+			  m = channel.match( /(\d+) : (.+)/ )
+			  channels[m[1].to_i] = m[2] unless m.nil?
+			end
+			return channels
+		end
+		
+		def current
+		  return @current unless (@current.nil?)
+		  result = command('current')
+		  return nil if result.content.empty?
+		  m = result.content.first.match(/(.+) : "(.+)"/)
+		  @current = m[2]
+		  return @current
+		end
+		
+		
+		def now(service=current)
+		  result = command('now', service)
+		  return parse_now_next( result )
+		end
+
+		def next(service=current)
+		  result = command('next', service)
+		  return parse_now_next( result )
+		end
+		
+		private
+		
+		def parse_now_next(result)
+		  hash = Hash.new
+		  while (line = result.content.shift)
+		    m = line.match( /(.+?)\s*:\s*(.*)/ )
+		    unless m.nil?
+		      key = m[1].downcase.gsub(/\W+/,'_')
+		      if (key=="description")
+		        hash[key] = result.content.shift
+		      else 
+		        hash[key] = m[2]
+		      end
+		    end
+		      
+		  end
+		  return hash
+		end
 	end
 
 end

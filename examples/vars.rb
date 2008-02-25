@@ -8,9 +8,9 @@
 $: << 'lib/' << '../lib/'
 
 
-require 'dvbstreamer'
+require 'dvbstreamer/client'
 
-dvbs = DVBStreamer::Client.new('star.aelius.co.uk')
+dvbs = DVBStreamer::Client.new
 puts dvbs.vars.content
 dvbs.close
 

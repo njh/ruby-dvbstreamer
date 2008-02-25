@@ -1,0 +1,7 @@
+# HTTP Server Config
+http_port: 8080
+
+# DVBStreamer Config
+dvbstreamer_host: 127.0.0.1
+dvbstreamer_adaptor: 0
+
